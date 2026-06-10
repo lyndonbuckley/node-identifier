@@ -1,6 +1,6 @@
-import { IdentifierOptions, IdentifierGenerationStrategy } from './lib';
+import { IdentifierOptions, IdentifierGenerationStrategy } from './lib.js';
 import { v1, v4, v7 } from 'uuid';
-import { Identifier } from './index';
+import { Identifier } from './index.js';
 import { randomBytes } from 'crypto';
 import { Buffer } from 'buffer';
 

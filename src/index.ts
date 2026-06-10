@@ -1,4 +1,4 @@
-export * from './lib';
+export * from './lib.js';
 import {
     Base64,
     IdentifierAllOptions,
@@ -6,8 +6,8 @@ import {
     IdentifierOptions,
     IdentifierStringMode,
     IdentifierValue,
-} from './lib';
-import { IdentifierGenerator } from './generator';
+} from './lib.js';
+import { IdentifierGenerator } from './generator.js';
 import BaseX from 'base-x';
 import { createHash } from 'crypto';
 import { Buffer } from 'buffer';
