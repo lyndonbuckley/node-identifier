@@ -11,6 +11,7 @@ export enum IdentifierGenerationStrategy {
     ObjectId = 'objectId',
     UUIDv1 = 'UUIDv1',
     UUIDv4 = 'UUIDv4',
+    UUIDv7 = 'UUIDv7',
 }
 
 export enum IdentifierStringMode {

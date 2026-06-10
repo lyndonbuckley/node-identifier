@@ -8,11 +8,12 @@ import {
     IdentifierValue,
 } from './lib';
 import { IdentifierGenerator } from './generator';
-import { BaseConverter } from 'base-x';
-import * as crypto from 'crypto';
+import BaseX from 'base-x';
+import { createHash } from 'crypto';
+import { Buffer } from 'buffer';
 
 export class Identifier {
-    static defaultGenerationStrategy: IdentifierGenerationStrategy = IdentifierGenerationStrategy.UUID;
+    static defaultGenerationStrategy: IdentifierGenerationStrategy = IdentifierGenerationStrategy.UUIDv7;
 
     static defaultOptions: IdentifierAllOptions = {
         alphabet: Base64,
@@ -67,19 +68,19 @@ export class Identifier {
     set buffer(buffer: Buffer) {
         this._value = this._trimBuffer(buffer);
     }
-    get buffer() {
+    get buffer(): Buffer {
         return this._value;
     }
 
-    private get _baseX(): BaseConverter {
-        return require('base-x')(this.options.alphabet);
+    private get _baseX() {
+        return BaseX(this.options.alphabet);
     }
 
     get base(): string {
         return this._baseX.encode(this.buffer).padStart(this.options.minimumLength, this.options.alphabet[0]);
     }
     set base(value: string) {
-        this.buffer = this._baseX.decode(value);
+        this.buffer = Buffer.from(this._baseX.decode(value).toString());
     }
 
     get hex() {
@@ -105,11 +106,8 @@ export class Identifier {
 
     public toString(): string {
         if (this.options.stringMode === IdentifierStringMode.Base) return this.base;
-
         if (this.options.stringMode === IdentifierStringMode.Hex) return this.hex;
-
         if (this.options.stringMode === IdentifierStringMode.UUID) return this.uuid;
-
         return '';
     }
 
@@ -143,9 +141,8 @@ export class Identifier {
             buffer = Buffer.concat([this._value, salt]);
         }
 
-        const hash = crypto.createHash(this.options.hashAlgorithm).update(buffer.toString()).digest();
+        const hash = createHash(this.options.hashAlgorithm).update(buffer.toString()).digest();
 
-        const result = this._baseX.encode(hash);
-        return result;
+        return this._baseX.encode(hash);
     }
 }
